@@ -60,8 +60,8 @@ export default {
     initMap() {
       const mapElement = document.getElementById("map");
       const mapOptions = {
-        center: { lat: 32.7341, lng: -117.1446 },
-        zoom: 10,
+        center: this.locations[0].loc,
+        zoom: 13,
         mapTypeId: window.google.maps.MapTypeId.ROADMAP,
         panControl: true,
         zoomControl: true,
@@ -80,7 +80,7 @@ export default {
      */
     addMarker() {
       const marker = new window.google.maps.Marker({
-        position: { lat: 32.7341, lng: -117.1446 },
+        position: this.locations[0].loc,
         animation: window.google.maps.Animation.DROP,
         draggable: true,
       });
@@ -96,7 +96,8 @@ export default {
       const request = {
         origin: start,
         destination: end,
-        travelMode: window.google.maps.TravelMode.DRIVING,
+        // https://developers.google.com/maps/documentation/transportation-logistics/on-demand-rides-deliveries-solution/pickup-and-dropoff-selection/location-selection/reference/rest/v1beta/TravelMode
+        travelMode: window.google.maps.TravelMode.TWO_WHEELER,
       };
 
       this.directionsDisplay.setMap(this.map);
@@ -130,7 +131,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #map {
   grid-area: map;
   width: 500px;

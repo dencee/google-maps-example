@@ -52,26 +52,23 @@ export default {
   name: "Map",
   data() {
     return {
-      google: null,
       map: null,
-      mapCenter: { lat: 32.7341, lng: 117.1446 },
+      mapCenter: { lat: 42.3327, lng: -83.0458 },
       locations: [
-        { coord: { lat: 32.7341, lng: 117.1446 }, name: "Balboa Park" },
+        { coord: { lat: 42.34, lng: -83.0456 }, name: "Ford Field" },
+        { coord: { lat: 42.3411, lng: -83.0553 }, name: "L.C. Arena" },
+        { coord: { lat: 42.339, lng: -83.0485 }, name: "Comerica Park" },
       ],
     };
   },
-
   methods: {
     initMap() {
-
       this.calculateCenter();
-
       this.map = new window.google.maps.Map(document.getElementById("map"), {
         center: this.mapCenter,
         zoom: 14,
         maxZoom: 20,
         minZoom: 3,
-        mapTypeId: 'terrain',
         streetViewControl: true,
         mapTypeControl: true,
         fullscreenControl: true,
@@ -89,50 +86,39 @@ export default {
         this.addPinViaClick(event);
       });
     },
-
     calculateCenter() {
       
       let latTotal =0, lngTotal = 0;
-
       for (let i=0; i < this.locations.length; i++) {
-          latTotal += parseFloat(this.locations[i].coord.lat);
-          lngTotal += parseFloat(this.locations[i].coord.lng);
+          latTotal +=  parseFloat(this.locations[i].coord.lat);
+          lngTotal +=  parseFloat(this.locations[i].coord.lng);
       }
-
       const lat = latTotal / this.locations.length;
       const lng = lngTotal / this.locations.length;
-
       this.mapCenter = {lat: lat, lng : lng};
-
     },
-
     makeMarkerObj(latLng, name) {
       const markerObj = { coord: latLng, name: name };
       return markerObj;
     },
-
     addPinViaClick(event) {
       let description = window.prompt("Enter a description");
       const markerObj = this.makeMarkerObj(event.latLng.toJSON(), description);
       this.locations.push(markerObj);
       this.dropPin(markerObj);
     },
-
     addPinViaInput() {
       let latitudeValue = parseFloat(document.getElementById("latitude-input").value
       );
       let longitudeValue = parseFloat(document.getElementById("longitude-input").value
       );
-
       const latSelectIndex = document.getElementById("latitude-direction").selectedIndex;
       const lonSelectIndex = document.getElementById("longitude-direction").selectedIndex;
       const latitudeDirection = document.getElementById("latitude-direction").options[latSelectIndex].text;
       const longitudeDirection = document.getElementById("longitude-direction").options[lonSelectIndex].text;
-
       const description = document.getElementById("description-input").value;
       latitudeValue = latitudeDirection === "North" ? latitudeValue : -1 * latitudeValue;
       longitudeValue = longitudeDirection === "East" ? longitudeValue : -1 * longitudeValue;
-
       const markerObj = this.makeMarkerObj(
         { lat: latitudeValue, lng: longitudeValue },
         description
@@ -140,11 +126,9 @@ export default {
       this.locations.push(markerObj);
       this.dropPin(markerObj);
     },
-
     dropPins() {
       this.locations.forEach((x) => this.dropPin(x));
     },
-
     dropPin(markerObj) {
       new window.google.maps.Marker({
         position: markerObj.coord,
@@ -155,11 +139,9 @@ export default {
         },
       });
     },
-
     summarizeMarkers() {
       const dataSection = document.getElementById("report");
       let text = "<ol>";
-
       this.locations.forEach(
         (x) =>
           (text =
@@ -167,17 +149,11 @@ export default {
             `<li>Latitude: ${x.coord.lat} Longitude: ${x.coord.lng} Description: ${x.name}` +
             "</li>")
       );
-
       text += "</ol>";
       dataSection.innerHTML = text;
     },
   },
-
-  /*
-   * Use mounted because DOM manipulation needed 
-   */
   mounted() {
-    this.google = window.google;
     this.initMap();
     this.dropPins();
   },
@@ -223,7 +199,6 @@ export default {
   margin: 25px;
   border: 1px dashed gray;
 }
-
 .coord-input {
   border: 1px dashed gray;
   padding: 25px;

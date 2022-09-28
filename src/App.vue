@@ -1,16 +1,16 @@
 <template>
-  <!-- <locations></locations> -->
+  <locations />
   <google-map />
 </template>
 
 <script>
+import Locations from './components/Locations.vue'
 import GoogleMap from './components/GoogleMap.vue'
-//import Locations from './components/Locations.vue'
 
 export default {
   name: 'App',
   components: {
-//    Locations,
+    Locations,
     GoogleMap
   }
 }
